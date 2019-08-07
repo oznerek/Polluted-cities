@@ -33,6 +33,18 @@ form {
   width: 100% !important
 }
 
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+.pollution {
+  width: 35%;
+  font-size: 75%;
+}
+.cityName {
+  width: 65%;
+}
+
 .CityList {
   padding: 30px 0px 60px 0px;
   height: 100%;
@@ -45,6 +57,9 @@ li{
 a {
   text-decoration: none;
   color: white;
+}
+i{
+  cursor: pointer;
 }
 .card-header {
   background: transparent black repeat top left; 

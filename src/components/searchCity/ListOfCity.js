@@ -8,10 +8,15 @@ class ListOfCity extends React.Component {
     let renderList = city;
 
     if (!city) {
-      return (renderList = <div className="text-center info"><b>Check The Most Polluted Cities In The Selected Country</b></div>);
+      return (renderList = (
+        <div className="text-center info">
+          <b>Check The Most Polluted Cities In The Selected Country</b>
+        </div>
+      ));
     }
     let resultsCityList = city.data.results;
     let fullListOfCity = [];
+    let sortedList = [];
     let lastUpdateTime = "";
     let dateOfUpdateData = "";
     let d = new Date();
@@ -28,18 +33,18 @@ class ListOfCity extends React.Component {
     fullListOfCity.push(resultsCityList.sort(sorts));
 
     // sorted the old values
-
-    let sortedList = [];
     fullListOfCity[0].forEach(cities => {
       lastUpdateTime = cities.measurements[0].lastUpdated;
       dateOfUpdateData = lastUpdateTime.slice(0, 10);
       if (dateOfUpdateData === today) {
         return sortedList.push(cities);
       }
-      
     });
+    console.log(sortedList)
     // filter data, remove the duplicate city and send request for description
-    let filterCityList = [...new Set(sortedList.map(item => item.city))];
+    let filterCityList = [...new Set(sortedList.map(item =>item.city))];
+    //  item.measurements[0].value
+    console.log(filterCityList)
     filterCityList.forEach((cities, index) => {
       if (index < 10) {
         this.props.fetchCityDetails(cities);
@@ -47,9 +52,21 @@ class ListOfCity extends React.Component {
     });
 
     renderList = filterCityList.map((cities, index) => {
+      if (index < 10) {
+
       let dataTrget = `#${index}`;
       let description = "";
       let link = "";
+      let lastUpdate = "";
+      let pollution = "" ;
+
+      sortedList.forEach((el, index) =>{
+        if (index < 10) {
+        if (cities === el.city) {
+          pollution = parseFloat(el.measurements[0].value).toFixed(2);
+          lastUpdate = el.measurements[0].lastUpdated.slice(0, 10) + ' ' +el.measurements[0].lastUpdated.slice(11, 16)
+        }
+      }})
       // search description to city
       if (this.props.cityDescription[index] !== undefined) {
         this.props.cityDescription.forEach(item => {
@@ -59,7 +76,8 @@ class ListOfCity extends React.Component {
           }
         });
       }
-      if (index < 10) {
+      
+        
         return (
           <div className="card" key={cities + index}>
             <div
@@ -71,9 +89,15 @@ class ListOfCity extends React.Component {
               aria-expanded="false"
               aria-controls={index}
             >
-              <div className="row">
-                <h3 className="position col-2">{index + 1}</h3>
-                <h3 className="mb-0 cityName col-10">{cities}</h3>
+              <div className="row flex">
+                <div className='flex cityName'>
+                  <h3 className="position col-2">{index + 1}</h3>
+                  <h3 className="mb-0 cityName col-10">{cities}</h3>
+                </div>
+                <div className='pollution'>
+                  <div className='flex'><span>Date:</span><span>{lastUpdate}</span> </div>
+                  <div className='flex'><span>Pollution (pm10):</span><span>{pollution} &mu;g/m<sup>3</sup></span>  </div>
+                </div>
               </div>
             </div>
             <div

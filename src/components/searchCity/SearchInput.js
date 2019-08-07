@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { fetchCity } from "../../action";
+import { city } from "./listOfCountry";
 
 class SearchInput extends React.Component {
   state = { term: "", errors: "" };
@@ -13,45 +14,40 @@ class SearchInput extends React.Component {
   componentDidMount() {
     this.check();
   }
+
   check = () => {
     let country = "";
     if (this.state.term) {
       country = this.state.term.toLowerCase();
     }
-    switch (country) {
-      case "poland":
-        return this.props.fetchCity("PL");
 
-      case "france":
-        return this.props.fetchCity("FR");
-
-      case "germany":
-        return this.props.fetchCity("DE");
-
-      case "spain":
-        return this.props.fetchCity("ES");
-      default:
-      return
-    }
+    city.forEach(el => {
+      let countryName = el.name.toLowerCase();
+      if (country === countryName) {
+        console.log(el.code)
+        return this.props.fetchCity(el.code);
+      }
+    });
   };
+
   onInputChange = event => {
     this.setState({ term: event.target.value });
   };
   onFormSubmit = event => {
     event.preventDefault();
     let country = this.state.term.toLowerCase();
-    if (
-      country !== "poland" &&
-      country !== "france" &&
-      country !== "germany" &&
-      country !== "spain"
-    ) {
-      this.setState({
-        errors: "*Please enter value : Poland, France, Spain or Germany"
-      });
-    } else {
-      this.setState({ errors: "" });
-    }
+    // if (
+    //   country !== "poland" &&
+    //   country !== "france" &&
+    //   country !== "germany" &&
+    //   country !== "spain"
+    // ) {
+    //   this.setState({
+    //     errors: "*Please check country name"
+    //   });
+    // } else {
+    //   this.setState({ errors: "" });
+    // }
     sessionStorage.setItem("key", country);
     this.check();
   };
@@ -78,7 +74,7 @@ class SearchInput extends React.Component {
               </div>
               <div className="col-2 serach">
                 <span className="float-right">
-                  <i className="fas fa-search fa-2x" />
+                  <i className="fas fa-search fa-2x" onClick={this.onFormSubmit} />
                 </span>
               </div>
             </div>
