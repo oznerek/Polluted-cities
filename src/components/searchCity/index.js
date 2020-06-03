@@ -5,8 +5,8 @@ import SearchInput from "./SearchInput";
 import { connect } from "react-redux";
 import { fetchCity } from "../../action";
 
-
 class Search extends React.Component {
+  
   render() {
     return (
       <div>
@@ -37,33 +37,33 @@ class Search extends React.Component {
           </li>
         </ul>
 
-        <div className="container searchLine">
+        <div className="container search_line">
           <SearchInput />
-          <div className="CityList">
+          <div className="city_list">
             <ListOfCity city={this.props.cityList[0]} />
           </div>
-          <footer className="copyright text-center text-light">
+          <div className="copyright text-center text-light">
             <div>&copy; by Michal Oznerek.</div>
             <div>
               Powered by 
               <a href="https://openaq.org/" className="link">
-                openaq.org
+                openaq.org & 
               </a>
-              &
+              
               <a
                 href="https://www.mediawiki.org/wiki/MediaWiki"
                 className="link"
               >
-                mediawiki.org
+                 mediawiki.org
               </a>
             </div>
-          </footer>
+          </div>
         </div>
+
       </div>
     );
   }
 }
-
 
 const mapStateToProps = state => {
   return { cityList: state.citiesList };

@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { fetchCity } from "../../action";
-import { city } from "./listOfCountry";
+import { countryCode } from "./listOfCountry";
+
 
 class SearchInput extends React.Component {
   state = { term: "", errors: "" };
@@ -20,11 +21,9 @@ class SearchInput extends React.Component {
     if (this.state.term) {
       country = this.state.term.toLowerCase();
     }
-
-    city.forEach(el => {
+    countryCode.forEach(el => {
       let countryName = el.name.toLowerCase();
       if (country === countryName) {
-        console.log(el.code)
         return this.props.fetchCity(el.code);
       }
     });
@@ -36,55 +35,39 @@ class SearchInput extends React.Component {
   onFormSubmit = event => {
     event.preventDefault();
     let country = this.state.term.toLowerCase();
-    // if (
-    //   country !== "poland" &&
-    //   country !== "france" &&
-    //   country !== "germany" &&
-    //   country !== "spain"
-    // ) {
-    //   this.setState({
-    //     errors: "*Please check country name"
-    //   });
-    // } else {
-    //   this.setState({ errors: "" });
-    // }
     sessionStorage.setItem("key", country);
     this.check();
   };
 
   render() {
     return (
-      <div>
-        <div className="row ">
-          <div />
-          <div className="col-3" />
-          <div className="col-6 search">
-            <div className="row my-1">
-              <div className="input-group col-10">
-                <form onSubmit={this.onFormSubmit}>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="validationDefault01"
-                    placeholder="  Search . . ."
-                    value={this.state.term}
-                    onChange={this.onInputChange}
-                  />
-                </form>
-              </div>
-              <div className="col-2 serach">
-                <span className="float-right">
-                  <i className="fas fa-search fa-2x" onClick={this.onFormSubmit} />
-                </span>
-              </div>
+        <div>
+          <div className="search">
+            <form onSubmit={this.onFormSubmit}>
+              <input
+                type="text"
+                id="validationDefault01"
+                placeholder="  Search . . ."
+                value={this.state.term}
+                onChange={this.onInputChange}
+              />
+            </form>
+            <div className="search--icon">
+              <i className="fas fa-search" onClick={this.onFormSubmit} />
+            </div>
+            <div className="tip">
+              <i className="fas fa-info-circle tooltips" />
+              <div className="tooltips__text">
+                  <div> Input search work only on the full English name of the country</div>
+                </div>
             </div>
           </div>
-          <div className="col-3" />
-        </div>
+
         <div className="d-flex justify-content-center">
           <div className="text-center error">{this.state.errors}</div>
         </div>
-      </div>
+        </div>
+
     );
   }
 }

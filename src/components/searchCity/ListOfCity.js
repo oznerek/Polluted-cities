@@ -16,7 +16,7 @@ class ListOfCity extends React.Component {
     }
     let resultsCityList = city.data.results;
     let fullListOfCity = [];
-    let sortedList = [];
+    let actuallDataValue = [];
     let lastUpdateTime = "";
     let dateOfUpdateData = "";
     let d = new Date();
@@ -26,58 +26,75 @@ class ListOfCity extends React.Component {
       ("0" + (d.getMonth() + 1)).slice(-2) +
       "-" +
       ("0" + d.getDate()).slice(-2);
-
+    // sorted from heigt value
     let sorts = (x, y) => {
       return y.measurements[0].value - x.measurements[0].value;
     };
     fullListOfCity.push(resultsCityList.sort(sorts));
 
-    // sorted the old values
+    // delete the old values
     fullListOfCity[0].forEach(cities => {
       lastUpdateTime = cities.measurements[0].lastUpdated;
       dateOfUpdateData = lastUpdateTime.slice(0, 10);
       if (dateOfUpdateData === today) {
-        return sortedList.push(cities);
+        return actuallDataValue.push(cities);
       }
     });
-    console.log(sortedList)
+
     // filter data, remove the duplicate city and send request for description
-    let filterCityList = [...new Set(sortedList.map(item =>item.city))];
-    //  item.measurements[0].value
-    console.log(filterCityList)
+    let filterCityList = [...new Set(actuallDataValue.map(item => item.city))];
+
     filterCityList.forEach((cities, index) => {
       if (index < 10) {
         this.props.fetchCityDetails(cities);
       }
     });
 
+    // reverse list to correct printing data
+    let reverseList = actuallDataValue.reverse();
+
+    if (filterCityList.length <= 0) {
+      return (renderList = (
+        <span>
+          <div className="text-center info">
+            Oops we don't have actual data for this country
+          </div>
+          <div className="text-center info">Please check again later</div>
+        </span>
+      ));
+    }
     renderList = filterCityList.map((cities, index) => {
+      
       if (index < 10) {
+        let dataTrget = `#${index}`;
+        let description = "";
+        let link = "";
+        let lastUpdate = "";
+        let pollution_pm25 = "";
 
-      let dataTrget = `#${index}`;
-      let description = "";
-      let link = "";
-      let lastUpdate = "";
-      let pollution = "" ;
-
-      sortedList.forEach((el, index) =>{
-        if (index < 10) {
-        if (cities === el.city) {
-          pollution = parseFloat(el.measurements[0].value).toFixed(2);
-          lastUpdate = el.measurements[0].lastUpdated.slice(0, 10) + ' ' +el.measurements[0].lastUpdated.slice(11, 16)
-        }
-      }})
-      // search description to city
-      if (this.props.cityDescription[index] !== undefined) {
-        this.props.cityDescription.forEach(item => {
-          if (item[0] === cities) {
-            description = item[2][0];
-            link = item[3][0];
+        reverseList.forEach((el, index) => {
+          if (cities === el.city) {
+            pollution_pm25 = parseFloat(el.measurements[0].value).toFixed(2);
+            lastUpdate =
+              el.measurements[0].lastUpdated.slice(0, 10) +
+              " " +
+              el.measurements[0].lastUpdated.slice(11, 16);
           }
         });
-      }
-      
-        
+        // search description to city
+        if (this.props.cityDescription[index] !== undefined) {
+          this.props.cityDescription.forEach(item => {
+            if (item[0] === cities) {
+              if(item[2][0] != ''){
+                description = item[2][0];
+              } else {
+                description = 'Something went wrong, We can\'t show you short description about this city. If you need more information about this city please click this button below';
+              }
+              link = item[3][0];
+            }
+          });
+        }
+
         return (
           <div className="card" key={cities + index}>
             <div
@@ -85,18 +102,26 @@ class ListOfCity extends React.Component {
               id={cities}
               role="button"
               data-toggle="collapse"
-              data-target={dataTrget}
+              data-target={dataTrget} 
               aria-expanded="false"
               aria-controls={index}
             >
               <div className="row flex">
-                <div className='flex cityName'>
-                  <h3 className="position col-2">{index + 1}</h3>
-                  <h3 className="mb-0 cityName col-10">{cities}</h3>
+                <div className="flex city_name">
+                  <h3 className="position ">{index + 1}</h3>
+                  <h3 className="mb-0 city_name ">{cities}</h3>
                 </div>
-                <div className='pollution'>
-                  <div className='flex'><span>Date:</span><span>{lastUpdate}</span> </div>
-                  <div className='flex'><span>Pollution (pm10):</span><span>{pollution} &mu;g/m<sup>3</sup></span>  </div>
+                <div className="pollution">
+                  <div className="flex">
+                    <span>Date:</span>
+                    <span>{lastUpdate}</span>{" "}
+                  </div>
+                  <div className="flex">
+                    <span>Pollution (pm25):</span>
+                    <span>
+                      {pollution_pm25} &mu;g/m<sup>3</sup>
+                    </span>{" "}
+                  </div>
                 </div>
               </div>
             </div>
@@ -107,9 +132,9 @@ class ListOfCity extends React.Component {
               data-parent="#accordionExample"
             >
               <div className="card-body">
-                <p>{description}</p>
+                <p style={{paddingLeft:35+'px'}}>{description}</p>
                 <p className="float-right">
-                  <a href={link}>More information</a>
+                  <a href={link} target="_blank">More information</a>
                 </p>
               </div>
             </div>

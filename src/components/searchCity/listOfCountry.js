@@ -1,4 +1,4 @@
- exports.city =  [
+ exports.countryCode =  [
     { name: "Algeria", code: "DZ", cities: 1, locations: 1, count: 800 },
     { name: "Andorra", code: "AD", cities: 2, locations: 3, count: 78653 },
     { name: "Argentina", code: "AR", cities: 1, locations: 4, count: 14976 },
