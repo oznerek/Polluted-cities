@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/Polluted-cities/static/js/main.829a6efc.chunk.js",
-    "main.js.map": "/Polluted-cities/static/js/main.829a6efc.chunk.js.map",
+    "main.js": "/Polluted-cities/static/js/main.1a4fd6d7.chunk.js",
+    "main.js.map": "/Polluted-cities/static/js/main.1a4fd6d7.chunk.js.map",
     "runtime~main.js": "/Polluted-cities/static/js/runtime~main.4852b0a6.js",
     "runtime~main.js.map": "/Polluted-cities/static/js/runtime~main.4852b0a6.js.map",
     "static/js/2.cb1a62d1.chunk.js": "/Polluted-cities/static/js/2.cb1a62d1.chunk.js",
     "static/js/2.cb1a62d1.chunk.js.map": "/Polluted-cities/static/js/2.cb1a62d1.chunk.js.map",
     "index.html": "/Polluted-cities/index.html",
-    "precache-manifest.b642c034d680711a277f717cfcb4c517.js": "/Polluted-cities/precache-manifest.b642c034d680711a277f717cfcb4c517.js",
+    "precache-manifest.24d5394c8a611a619b73429ebd4f53e3.js": "/Polluted-cities/precache-manifest.24d5394c8a611a619b73429ebd4f53e3.js",
     "service-worker.js": "/Polluted-cities/service-worker.js"
   }
 }
